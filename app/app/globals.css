@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+:root {
+  /* Paper Ledger — sage columnar-pad paper, red/green bookkeeping ink convention */
+  --paper: #eef2e9;
+  --paper-panel: #e6ecdd;
+  --rule: #c7d3bc;
+  --rule-strong: #9fb08f;
+  --ink: #1b241d;
+  --ink-muted: #59684f;
+  --credit: #1f4a34;
+  --credit-soft: #dfead9;
+  --debit: #8a2e22;
+  --debit-soft: #f3e2dc;
+  --warn: #8a6a1f;
+  --warn-soft: #f0e6cb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* "Ledger by lamplight" — a closed ledger's leather-green cover, not a naive inversion */
+    --paper: #16211a;
+    --paper-panel: #1d2b22;
+    --rule: #2b3d30;
+    --rule-strong: #3c5645;
+    --ink: #ede6d6;
+    --ink-muted: #a9b6a2;
+    --credit: #4caf7d;
+    --credit-soft: #1f3a2c;
+    --debit: #e0776a;
+    --debit-soft: #3a231e;
+    --warn: #d9b34c;
+    --warn-soft: #3a301a;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-panel: var(--paper-panel);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-credit: var(--credit);
+  --color-credit-soft: var(--credit-soft);
+  --color-debit: var(--debit);
+  --color-debit-soft: var(--debit-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  min-height: 100dvh;
+}
+
+.figures {
+  font-family: ui-monospace, "SF Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Browser surfaces we didn't draw still carry the design. In `@layer base` so it sits below
+   Tailwind's utility layer: elements with their own `focus:ring`/`focus:outline-*` still win
+   (Tailwind's cascade layers rank utilities above unlayered/base rules regardless of selector
+   specificity), so this is a fallback, not a second ring stacked on top. */
+@layer base {
+  ::selection {
+    background: var(--credit);
+    color: var(--paper);
+  }
+
+  * {
+    scrollbar-color: var(--rule-strong) var(--paper);
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--paper);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--rule-strong);
+    border-radius: 999px;
+    border: 2px solid var(--paper);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-muted);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--credit);
+    outline-offset: 3px;
+  }
+
+  input,
+  textarea {
+    caret-color: var(--credit);
+  }
+}
+
+/* Stamp button — the primary CTA's hover moment: a slight rubber-stamp tilt, not a screen-glow
+   sweep (that belonged to the old navy "digital" world, not paper). */
+.stamp-btn {
+  transition: transform 0.15s ease;
+}
+
+.stamp-btn:hover {
+  transform: rotate(-0.6deg) scale(1.015);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-btn:hover {
+    transform: none;
+  }
+}
+
+/* Live indicator dot — used on entry cards standing in for the old rotating border-beam ring,
+   which read as a screen effect and didn't suit paper. */
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-dot {
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
+}

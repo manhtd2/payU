@@ -1,0 +1,21 @@
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Foundry
+contracts/cache/
+contracts/out/
+contracts/broadcast/*/31337/
+contracts/lib/
+
+# Node
+node_modules/
+app/.next/
+app/node_modules/
+relayer/node_modules/
+relayer/dist/
+
+# OS
+.DS_Store
+Thumbs.db
